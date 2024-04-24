@@ -86,12 +86,16 @@ window.onload = () => {
             delete favoritos[movie.id]
             star.classList.remove("fa-solid")
             star.classList.add("fa-regular")
-            localStorage.setItem('favoritos',JSON.stringify(favoritos))   
+            localStorage.setItem('favoritos',JSON.stringify(favoritos))  
+            if (Object.keys(favoritos).length == 0){
+              pFav.style.display = 'none'
+            } 
           } else {
             favoritos[movie.id] = movie
             star.classList.remove("fa-regular")
             star.classList.add("fa-solid")
             localStorage.setItem('favoritos',JSON.stringify(favoritos))   
+            pFav.style.display = 'inline'
           } 
         })
       })
