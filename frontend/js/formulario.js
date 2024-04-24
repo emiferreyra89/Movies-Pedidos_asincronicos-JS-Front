@@ -1,4 +1,7 @@
 window.onload = () => {
+  const body = document.querySelector('body')
+  const form = document.querySelector('form')
+
   const editMovie = document.querySelector("#editMovie")
   const addMovie = document.querySelector("#addMovie")
   const deleteMovie = document.querySelector("#deleteMovie")
@@ -15,8 +18,21 @@ window.onload = () => {
   const movieId = urlParams.get('id');
   const id = parseInt(movieId)
 
-  console.log("movieId", (movieId));
-  console.log("id", (id));
+  const divHome =  document.createElement("div")
+  divHome.style.display = 'flex'
+  divHome.style.justifyContent = 'center'
+
+  const pHome = document.createElement('p')
+  pHome.style.fontSize = '18px'
+  pHome.style.fontWeight = "600"
+  const linkHome = document.createElement("a")
+  linkHome.setAttribute("href",`home.html`)
+  pHome.innerText = 'Home'
+  linkHome.appendChild(pHome)
+  
+  divHome.appendChild(linkHome)
+  body.appendChild(divHome)
+  body.appendChild(form)
 
   if (id) {
     editMovie.style.display = "inline"
@@ -32,7 +48,7 @@ window.onload = () => {
       release_date.value = pelicula.data.release_date.split('T')[0]
       length.value = pelicula.data.length
     })
-      //console.log('titulo..1',title.value);
+
     editMovie.addEventListener('click', (e) => {
       e.preventDefault()
       const movieUpdate = {

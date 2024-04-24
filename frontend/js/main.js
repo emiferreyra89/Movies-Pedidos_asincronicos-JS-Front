@@ -26,12 +26,12 @@ window.onload = () => {
   app.appendChild(divAdd)
   divAdd.appendChild(linkAdd)
   divAdd.appendChild(linkFavorites)
-
   app.appendChild(container);
 
   let favoritos = localStorage.getItem('favoritos')
-  //console.log("Favoritos", favoritos);
   favoritos = favoritos ? JSON.parse(favoritos) : {}
+
+  pFav.style.display = 'none'
 
   // Aqui debemos agregar nuestro fetch
     fetch("http://localhost:3031/api/movies")
@@ -40,10 +40,17 @@ window.onload = () => {
 
       let data = peliculas.data;
 
+      // Aqui se crean las tarjetas con la info obtenida del fetch
       data.forEach((movie) => {
         const star = document.createElement("i")
         star.id = movie.id
-        //star.setAttribute("id", movie.id)
+        if (favoritos[movie.id]) {
+          star.classList.add("fa-solid")
+          star.classList.add("fa-star")
+        } else {
+          star.classList.add("fa-regular")
+          star.classList.add("fa-star")
+        }
 
         const card = document.createElement("div");
         card.setAttribute("class", "card");
@@ -74,37 +81,25 @@ window.onload = () => {
         card.appendChild(duracion);
         card.appendChild(linkEdit);
 
-        if (favoritos[movie.id]) {
-          star.setAttribute("class", "fa-solid")
-          star.setAttribute("class", "fa-star")
-        } else {
-          star.setAttribute("class", "fa-regular")
-          star.setAttribute("class", "fa-star")
-        }
-
         star.addEventListener('click', (e) => {
-          e.preventDefault()  
           if (favoritos[movie.id]) {
             delete favoritos[movie.id]
             star.classList.remove("fa-solid")
             star.classList.add("fa-regular")
+            localStorage.setItem('favoritos',JSON.stringify(favoritos))   
           } else {
             favoritos[movie.id] = movie
             star.classList.remove("fa-regular")
             star.classList.add("fa-solid")
+            localStorage.setItem('favoritos',JSON.stringify(favoritos))   
           } 
-          localStorage.setItem(favoritos,JSON.stringify(favoritos))   
-          console.log("favoritos..",favoritos);
-          if (Object.keys(favoritos).length>0) {
-            pFav.style.display = 'inline'
-            console.log("hola");
-          } else {
-            pFav.style.display = 'none'
-            console.log("chau");
-          }
         })
       })
-      
     });
     
+    if (Object.keys(favoritos).length > 0) {
+      pFav.style.display = 'inline'
+    } else {
+      pFav.style.display = 'none'
+    }
 };
