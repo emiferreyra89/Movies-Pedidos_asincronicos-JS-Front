@@ -5,8 +5,9 @@ window.onload = () => {
   app.appendChild(container);
 
   // Aqui debemos agregar nuestro fetch
-
-
+console.log("holaaaaa");
+let data = localStorage 
+console.log("Favoritos", data);
 
   /** Codigo que debemos usar para mostrar los datos en el frontend
     let data = peliculas.data;

@@ -29,41 +29,82 @@ window.onload = () => {
 
   app.appendChild(container);
 
+  let favoritos = localStorage.getItem('favoritos')
+  //console.log("Favoritos", favoritos);
+  favoritos = favoritos ? JSON.parse(favoritos) : {}
+
   // Aqui debemos agregar nuestro fetch
     fetch("http://localhost:3031/api/movies")
     .then((response) => response.json())
     .then((peliculas) => {
 
-    let data = peliculas.data;
+      let data = peliculas.data;
 
-    data.forEach((movie) => {
-      const card = document.createElement("div");
-      card.setAttribute("class", "card");
+      data.forEach((movie) => {
+        const star = document.createElement("i")
+        star.id = movie.id
+        //star.setAttribute("id", movie.id)
 
-      const h1 = document.createElement("h1");
-      h1.textContent = movie.title;
+        const card = document.createElement("div");
+        card.setAttribute("class", "card");
 
-      const p = document.createElement("p");
-      p.textContent = `Rating: ${movie.rating}`;
+        const h1 = document.createElement("h1");
+        h1.textContent = movie.title;
 
-      const duracion = document.createElement("p");
-      duracion.textContent = `Duración: ${movie.length}`;
+        const p = document.createElement("p");
+        p.textContent = `Rating: ${movie.rating}`;
 
-      const linkEdit = document.createElement("a")
-      linkEdit.setAttribute("href",`formulario.html?id=${movie.id}`)
-      linkEdit.textContent = 'Edit Movie'
+        const duracion = document.createElement("p");
+        duracion.textContent = `Duración: ${movie.length}`;
 
-      container.appendChild(card);
-      card.appendChild(h1);
-      card.appendChild(p);
-      if (movie.genre !== null) {
-        const genero = document.createElement("p");
-        genero.textContent = `Genero: ${movie.genre.name}`;
-        card.appendChild(genero);
-      }
-      card.appendChild(duracion);
-      card.appendChild(linkEdit);
-    })
-  });
+        const linkEdit = document.createElement("a")
+        linkEdit.setAttribute("href",`formulario.html?id=${movie.id}`)
+        linkEdit.textContent = 'Edit Movie'
 
+        container.appendChild(card);
+        card.appendChild(star);
+        card.appendChild(h1);
+        card.appendChild(p);
+
+        if (movie.genre !== null) {
+          const genero = document.createElement("p");
+          genero.textContent = `Genero: ${movie.genre.name}`;
+          card.appendChild(genero);
+        }
+        card.appendChild(duracion);
+        card.appendChild(linkEdit);
+
+        if (favoritos[movie.id]) {
+          star.setAttribute("class", "fa-solid")
+          star.setAttribute("class", "fa-star")
+        } else {
+          star.setAttribute("class", "fa-regular")
+          star.setAttribute("class", "fa-star")
+        }
+
+        star.addEventListener('click', (e) => {
+          e.preventDefault()  
+          if (favoritos[movie.id]) {
+            delete favoritos[movie.id]
+            star.classList.remove("fa-solid")
+            star.classList.add("fa-regular")
+          } else {
+            favoritos[movie.id] = movie
+            star.classList.remove("fa-regular")
+            star.classList.add("fa-solid")
+          } 
+          localStorage.setItem(favoritos,JSON.stringify(favoritos))   
+          console.log("favoritos..",favoritos);
+          if (Object.keys(favoritos).length>0) {
+            pFav.style.display = 'inline'
+            console.log("hola");
+          } else {
+            pFav.style.display = 'none'
+            console.log("chau");
+          }
+        })
+      })
+      
+    });
+    
 };
