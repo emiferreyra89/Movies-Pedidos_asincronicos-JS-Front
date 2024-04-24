@@ -6,6 +6,7 @@ window.onload = () => {
   const divAdd =  document.createElement("div")
   divAdd.style.display = 'flex'
   divAdd.style.justifyContent = 'center'
+
   const pAdd = document.createElement('p')
   pAdd.style.fontSize = '18px'
   pAdd.style.fontWeight = "600"
@@ -13,6 +14,7 @@ window.onload = () => {
   linkAdd.setAttribute("href",`formulario.html`)
   pAdd.innerText = '+Add Movie'
   linkAdd.appendChild(pAdd)
+
   const pFav = document.createElement('p')
   pFav.style.fontSize = '18px'
   pFav.style.fontWeight = "600"
@@ -20,6 +22,7 @@ window.onload = () => {
   linkFavorites.setAttribute("href",`favoritas.html`)
   pFav.innerText = 'Favorites'
   linkFavorites.appendChild(pFav)
+  
   app.appendChild(divAdd)
   divAdd.appendChild(linkAdd)
   divAdd.appendChild(linkFavorites)
